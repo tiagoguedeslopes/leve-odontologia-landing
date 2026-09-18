@@ -332,6 +332,7 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
   width: 100%;
   aspect-ratio: 6/5;
   object-fit: cover;
+  object-position: 25% 62%;
   border-radius: 46% 54% 58% 42% / 52% 46% 54% 48%;
   box-shadow: 0 30px 60px -25px rgba(28,74,67,0.45);
 }
