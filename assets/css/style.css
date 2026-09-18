@@ -59,6 +59,21 @@ p{ margin: 0 0 1em; }
 }
 section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
 
+/* ---------- Scroll reveal (one fade+rise per section, not per card) ---------- */
+.reveal{
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible{ opacity: 1; transform: translateY(0); }
+
+/* ---------- Card hover lift (service/team cards) ---------- */
+.lift{ transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.lift:hover, .lift:focus-within{
+  transform: translateY(-6px);
+  box-shadow: 0 22px 40px -20px rgba(28,74,67,0.35);
+}
+
 :focus-visible{
   outline: 3px solid var(--cobalt);
   outline-offset: 3px;
@@ -251,6 +266,26 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
   font-weight: 600;
   color: var(--petrol);
 }
+
+/* ---------- Hero entrance sequence (one orchestrated moment, not repeated) ---------- */
+@keyframes heroFadeUp{
+  from{ opacity: 0; transform: translateY(18px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+@keyframes heroFigureIn{
+  from{ opacity: 0; transform: scale(0.92); }
+  to{ opacity: 1; transform: scale(1); }
+}
+.hero-copy > *{
+  opacity: 0;
+  animation: heroFadeUp 0.7s ease forwards;
+}
+.hero-copy .eyebrow-tag{ animation-delay: 0.05s; }
+.hero-copy h1{ animation-delay: 0.15s; }
+.hero-copy .lede{ animation-delay: 0.28s; }
+.hero-copy .hero-actions{ animation-delay: 0.4s; }
+.hero-copy .hero-trust{ animation-delay: 0.52s; }
+.hero-figure{ animation: heroFigureIn 0.8s cubic-bezier(.22,1,.36,1) 0.15s both; }
 .hero-trust li{ display: flex; align-items: center; gap: 0.5em; }
 .hero-trust li::before{
   content: "";
@@ -271,6 +306,7 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
   border-radius: 42% 58% 63% 37% / 45% 40% 60% 55%;
   z-index: -2;
   opacity: 0.9;
+  animation: blobFloatA 9s ease-in-out infinite;
 }
 .blob-frame::after{
   content: "";
@@ -280,12 +316,21 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
   border-radius: 60% 40% 34% 66% / 60% 55% 45% 40%;
   z-index: -1;
   opacity: 0.85;
+  animation: blobFloatB 11s ease-in-out infinite;
+}
+@keyframes blobFloatA{
+  0%, 100%{ transform: translate(0, 0) rotate(0deg); }
+  50%{ transform: translate(-2%, 3%) rotate(4deg); }
+}
+@keyframes blobFloatB{
+  0%, 100%{ transform: translate(0, 0) rotate(0deg); }
+  50%{ transform: translate(3%, -2%) rotate(-3deg); }
 }
 .blob-frame img{
   position: relative;
   z-index: 1;
   width: 100%;
-  aspect-ratio: 4/5;
+  aspect-ratio: 6/5;
   object-fit: cover;
   border-radius: 46% 54% 58% 42% / 52% 46% 54% 48%;
   box-shadow: 0 30px 60px -25px rgba(28,74,67,0.45);
@@ -331,7 +376,7 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
   overflow: hidden;
   box-shadow: 0 24px 48px -24px rgba(28,74,67,0.4);
 }
-.about-photo img{ aspect-ratio: 4/3; object-fit: cover; }
+.about-photo img{ aspect-ratio: 4/3; object-fit: cover; object-position: center 20%; }
 .pull-quote{
   font-family: var(--font-display);
   font-style: italic;
@@ -403,6 +448,15 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
 }
 @media (max-width: 560px){
   .service-grid{ grid-template-columns: 1fr; }
+}
+.services-cta{
+  margin: 2.2rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 700;
+  color: var(--petrol-dark);
 }
 
 /* ==========================================================================
@@ -672,6 +726,12 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
 .wa-float svg{ width: 22px; height: 22px; flex: none; }
 .wa-float .wa-label{ display: none; }
 @media (min-width: 640px){ .wa-float .wa-label{ display: inline; } }
+
+@keyframes waPulse{
+  0%, 100%{ box-shadow: 0 14px 30px -12px rgba(0,0,0,0.4), 0 0 0 0 rgba(37,211,102,0.55); }
+  50%{ box-shadow: 0 14px 30px -12px rgba(0,0,0,0.4), 0 0 0 12px rgba(37,211,102,0); }
+}
+.wa-float{ animation: waPulse 2s ease-out 2; animation-delay: 1.2s; }
 
 .cookie-banner{
   position: fixed;
