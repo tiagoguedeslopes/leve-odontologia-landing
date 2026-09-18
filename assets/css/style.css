@@ -62,16 +62,30 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
 /* ---------- Scroll reveal (one fade+rise per section, not per card) ---------- */
 .reveal{
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(42px) scale(0.98);
+  transition: opacity 0.8s cubic-bezier(.22,1,.36,1), transform 0.8s cubic-bezier(.22,1,.36,1);
 }
-.reveal.is-visible{ opacity: 1; transform: translateY(0); }
+.reveal.is-visible{ opacity: 1; transform: translateY(0) scale(1); }
+
+/* Photos get a touch of extra life: a slow continued zoom-out as they reveal */
+.reveal img{
+  transition: transform 1.1s cubic-bezier(.22,1,.36,1);
+}
+figure img, .about-photo img, .service-card .photo img, .team-card .photo img{
+  transform: scale(1.08);
+}
+.reveal.is-visible figure img,
+.reveal.is-visible .about-photo img,
+.reveal.is-visible .service-card .photo img,
+.reveal.is-visible .team-card .photo img{
+  transform: scale(1);
+}
 
 /* ---------- Card hover lift (service/team cards) ---------- */
-.lift{ transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.lift{ transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s ease; }
 .lift:hover, .lift:focus-within{
-  transform: translateY(-6px);
-  box-shadow: 0 22px 40px -20px rgba(28,74,67,0.35);
+  transform: translateY(-8px);
+  box-shadow: 0 26px 46px -20px rgba(28,74,67,0.4);
 }
 
 :focus-visible{
@@ -142,7 +156,12 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
   top: 0;
   z-index: 40;
   background: var(--cream);
-  border-bottom: 1px solid var(--cream-line);
+}
+.site-header::after{
+  content: "";
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--petrol), var(--cobalt) 35%, var(--coral) 65%, var(--purple));
 }
 .nav-row{
   display: flex;
@@ -181,12 +200,22 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
   font-size: 0.96rem;
 }
 .nav-links a{
+  position: relative;
   text-decoration: none;
   color: var(--ink);
   padding: 0.3em 0.1em;
-  border-bottom: 2px solid transparent;
 }
-.nav-links a:hover{ border-color: var(--coral); }
+.nav-links a::after{
+  content: "";
+  position: absolute;
+  left: 50%; right: 50%;
+  bottom: -2px;
+  height: 2px;
+  background: var(--coral);
+  border-radius: 2px;
+  transition: left 0.25s ease, right 0.25s ease;
+}
+.nav-links a:hover::after, .nav-links a:focus-visible::after{ left: 0; right: 0; }
 .nav-cta{ flex: none; display: flex; align-items: center; gap: 0.75rem; }
 .nav-cta .btn span.short{ display: none; }
 .nav-toggle{
@@ -319,12 +348,12 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
   animation: blobFloatB 11s ease-in-out infinite;
 }
 @keyframes blobFloatA{
-  0%, 100%{ transform: translate(0, 0) rotate(0deg); }
-  50%{ transform: translate(-2%, 3%) rotate(4deg); }
+  0%, 100%{ transform: translate(0, 0) rotate(0deg) scale(1); }
+  50%{ transform: translate(-4%, 5%) rotate(7deg) scale(1.04); }
 }
 @keyframes blobFloatB{
-  0%, 100%{ transform: translate(0, 0) rotate(0deg); }
-  50%{ transform: translate(3%, -2%) rotate(-3deg); }
+  0%, 100%{ transform: translate(0, 0) rotate(0deg) scale(1); }
+  50%{ transform: translate(5%, -4%) rotate(-6deg) scale(1.05); }
 }
 .blob-frame img{
   position: relative;
@@ -357,6 +386,11 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
   width: 10px; height: 10px; border-radius: 50%;
   background: var(--cobalt); flex: none;
 }
+.hero-figure-tag .stars{
+  width: 22px; height: 22px; flex: none;
+  color: var(--gold);
+}
+.hero-figure-tag .count-up{ color: var(--cobalt); font-variant-numeric: tabular-nums; }
 
 @media (max-width: 900px){
   .hero .container{ grid-template-columns: 1fr; }
@@ -713,26 +747,26 @@ section{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
   display: flex;
   align-items: center;
   gap: 0.6em;
-  background: #25D366;
+  background: var(--cobalt);
   color: #fff;
   padding: 0.85em 1.1em;
   border-radius: 999px;
   text-decoration: none;
   font-weight: 700;
   font-size: 0.92rem;
-  box-shadow: 0 14px 30px -12px rgba(0,0,0,0.4);
-  transition: transform 0.15s ease;
+  box-shadow: 0 14px 30px -12px rgba(46,79,224,0.55);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.wa-float:hover{ transform: translateY(-2px) scale(1.02); }
+.wa-float:hover{ transform: translateY(-2px) scale(1.02); background: #263fc2; }
 .wa-float svg{ width: 22px; height: 22px; flex: none; }
 .wa-float .wa-label{ display: none; }
 @media (min-width: 640px){ .wa-float .wa-label{ display: inline; } }
 
 @keyframes waPulse{
-  0%, 100%{ box-shadow: 0 14px 30px -12px rgba(0,0,0,0.4), 0 0 0 0 rgba(37,211,102,0.55); }
-  50%{ box-shadow: 0 14px 30px -12px rgba(0,0,0,0.4), 0 0 0 12px rgba(37,211,102,0); }
+  0%, 100%{ box-shadow: 0 14px 30px -12px rgba(46,79,224,0.55), 0 0 0 0 rgba(46,79,224,0.5); }
+  50%{ box-shadow: 0 14px 30px -12px rgba(46,79,224,0.55), 0 0 0 14px rgba(46,79,224,0); }
 }
-.wa-float{ animation: waPulse 2s ease-out 2; animation-delay: 1.2s; }
+.wa-float{ animation: waPulse 2.2s ease-out 3; animation-delay: 1.2s; }
 
 .cookie-banner{
   position: fixed;

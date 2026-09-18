@@ -40,6 +40,28 @@
   if (accept) accept.addEventListener("click", function () { setChoice("accepted"); banner.hidden = true; });
   if (decline) decline.addEventListener("click", function () { setChoice("declined"); banner.hidden = true; });
 
+  // Count-up numbers (hero rating badge) — runs once, respects reduced motion
+  var prefersReducedForCount = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll(".count-up").forEach(function (el) {
+    var target = parseFloat(el.getAttribute("data-target"));
+    var decimals = parseInt(el.getAttribute("data-decimals"), 10) || 0;
+    if (prefersReducedForCount || isNaN(target)) {
+      el.textContent = target.toFixed(decimals).replace(".", ",");
+      return;
+    }
+    var duration = 1400;
+    var start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var value = target * eased;
+      el.textContent = value.toFixed(decimals).replace(".", ",");
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+
   // Scroll reveal — one fade+rise per section block, skipped for reduced-motion users
   var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var revealEls = document.querySelectorAll(".reveal");
